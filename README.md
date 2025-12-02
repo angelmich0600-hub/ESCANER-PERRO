@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
     
     <style>
-        /* --- ESTILOS MEJORADOS --- */
+        /* (Mismos estilos CSS de la versión anterior) */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
@@ -176,13 +176,13 @@
 
         <div class="input-group">
             <label for="file-frente" class="input-box">
-                📤 **Frente**
-                <input type="file" id="file-frente" accept="image/jpeg, image/png" onchange="handleFileInput(event, 'frente')">
+                📸 **Frente** (Toca para tomar foto)
+                <input type="file" id="file-frente" accept="image/*" capture="environment" onchange="handleFileInput(event, 'frente')">
             </label>
             
             <label for="file-reverso" class="input-box">
-                📥 **Reverso**
-                <input type="file" id="file-reverso" accept="image/jpeg, image/png" onchange="handleFileInput(event, 'reverso')">
+                📸 **Reverso** (Toca para tomar foto)
+                <input type="file" id="file-reverso" accept="image/*" capture="environment" onchange="handleFileInput(event, 'reverso')">
             </label>
         </div>
 

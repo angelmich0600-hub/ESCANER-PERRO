@@ -1,4 +1,3 @@
-
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -165,6 +164,20 @@
             background: #e74c3c;
             color: white;
         }
+        
+        /* ESTILO NUEVO PARA EL BOTÓN DE ROTACIÓN */
+        #rotate-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            background: #3498db;
+            color: white;
+            margin-top: 15px;
+            display: block; /* Para que ocupe todo el ancho o centrarlo */
+            width: 100%;
+        }
 
     </style>
 </head>
@@ -205,6 +218,8 @@
             <div style="max-height: 400px; overflow: hidden; margin-bottom: 15px;">
                 <img id="image-to-crop">
             </div>
+            
+            <button id="rotate-btn">🔄 Rotar 90°</button>
             <div class="modal-buttons">
                 <button id="crop-confirm-btn">Confirmar Recorte</button>
                 <button id="crop-cancel-btn">Cancelar</button>
@@ -218,7 +233,8 @@
         let imgDataFrente = null;
         let imgDataReverso = null;
         let currentCropper = null;
-        let currentSide = null; 
+        let currentSide = null;
+        let rotated = 0; // Variable para rastrear la rotación acumulada
         
         const { jsPDF } = window.jspdf;
 
@@ -231,13 +247,17 @@
             generatePdfBtn: document.getElementById('generate-pdf-btn'),
             placeholder: document.getElementById('placeholder'),
             previewFrente: document.getElementById('preview-frente'),
-            previewReverso: document.getElementById('preview-reverso')
+            previewReverso: document.getElementById('preview-reverso'),
+            // NUEVA REFERENCIA
+            rotateBtn: document.getElementById('rotate-btn') 
         };
 
         // --- MANEJADORES DE EVENTOS ---
         D.cropConfirmBtn.onclick = confirmCrop;
         D.cropCancelBtn.onclick = cancelCrop;
         D.generatePdfBtn.onclick = generatePDF;
+        // MANEJADOR DE EVENTO PARA EL NUEVO BOTÓN
+        D.rotateBtn.onclick = () => { rotateImage(90) }; 
 
 
         /**
@@ -256,6 +276,7 @@
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     currentSide = side;
+                    rotated = 0; // Reinicia la rotación para cada nueva imagen
                     
                     if (currentCropper) currentCropper.destroy();
                     D.imageToCrop.src = e.target.result;
@@ -275,6 +296,17 @@
                 reader.readAsDataURL(file);
             }
         }
+        
+        /**
+         * Rotar la imagen 90 grados usando Cropper.js
+         */
+        function rotateImage(degree) {
+            if (currentCropper) {
+                rotated += degree;
+                currentCropper.rotateTo(rotated);
+            }
+        }
+
 
         /**
          * Confirma el recorte y actualiza las variables de datos y la vista previa.
@@ -385,8 +417,8 @@
             try {
                 await navigator.share({
                     files: [pdfFile],
-                    title: 'Credencial Doble Cara PDF',
-                    text: 'Te envío la credencial unificada en un solo archivo PDF.',
+                    title: 'INE CLIENTE',
+                    text: 'Suerte en la venta 🌟.',
                 });
                 
                 console.log('PDF compartido con éxito.');
